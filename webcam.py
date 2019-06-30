@@ -2,8 +2,9 @@ import numpy as np
 import cv2 as cv
 import matplotlib.pyplot as plt
 
-cap = cv.VideoCapture(1)
-img1 = cv.imread('fotos/box1.jpg',cv.IMREAD_GRAYSCALE)          # queryImage
+cap = cv.VideoCapture(0)
+# img1 = cv.imread('fotos/box1.jpg',cv.IMREAD_GRAYSCALE)          # queryImage
+img1 = cv.imread('fotos/box_e.jpg',cv.IMREAD_GRAYSCALE)
 
 while(True):
     # Capture frame-by-frame
@@ -26,7 +27,7 @@ while(True):
     # Initiate ORB detector
     orb = cv.ORB_create()
     # find the keypoints and descriptors with ORB
-    kp1, des1 = orb.detectAndCompute(img1,None)
+    kp1, des1 = orb.detectAndCompute(img1,None) 
     kp2, des2 = orb.detectAndCompute(img2,None)
 
     # create BFMatcher object
