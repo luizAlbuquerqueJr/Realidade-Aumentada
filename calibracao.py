@@ -43,6 +43,7 @@ for fname in images:
 
 # calibração
 ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1],None,None)
+np.savez("R1", ret=ret, mtx=mtx, dist=dist, rvecs=rvecs, tvecs=tvecs)
 img = cv2.imread('calibracao/webcam-toy-foto8.jpg')
 h,  w = img.shape[:2]
 newcameramtx, roi=cv2.getOptimalNewCameraMatrix(mtx,dist,(w,h),0,(w,h))
@@ -78,5 +79,8 @@ for i in range(len(objpoints)):
     tot_error += error
 
 print ("total error: ", mean_error/len(objpoints))
+
+
+
 
 cv2.destroyAllWindows()
