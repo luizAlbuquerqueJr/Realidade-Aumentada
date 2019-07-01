@@ -45,6 +45,8 @@ for fname in glob.glob('calibracao/*.jpg'):
         
         # project 3D points to image plane
         imgpts, jac = cv2.projectPoints(axis, rvecs, tvecs, mtx, dist)
+        print("imgpts")
+        print(imgpts)
         img = draw2(img,corners2,imgpts)
         cv2.imshow('img',img)
         k = cv2.waitKey(0) & 0xFF
