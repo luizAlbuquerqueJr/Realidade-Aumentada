@@ -6,7 +6,7 @@ from PIL import Image
 import numpy as np
 from webcam import Webcam
 from glyphs import Glyphs
-from obj import OBJ
+
 from objloader import *
 from constants import *
  
@@ -19,6 +19,7 @@ class OpenGLGlyphs:
                                [ 1.0, 1.0, 1.0, 1.0]])
  
     def __init__(self):
+        print("aaaaaaaaaa")
         # initialise webcam and start thread
         self.webcam = Webcam()
         self.webcam.start()
@@ -32,7 +33,7 @@ class OpenGLGlyphs:
  
         # initialise texture
         self.texture_background = None
- 
+        print("bbbb")
     def _init_gl(self, Width, Height):
         glClearColor(0.0, 0.0, 0.0, 0.0)
         glClearDepth(1.0)
@@ -45,8 +46,9 @@ class OpenGLGlyphs:
         glMatrixMode(GL_MODELVIEW)
          
         # assign shapes
-        self.cone = OBJ('cone.mtl')
-        self.sphere = OBJ('cone.mtl')
+        self.cone = OBJ('cubo.obj',swapyz=True)
+        
+        self.sphere = OBJ('cubo.obj')
  
         # assign texture
         glEnable(GL_TEXTURE_2D)
@@ -64,7 +66,8 @@ class OpenGLGlyphs:
         bg_image = Image.fromarray(bg_image)     
         ix = bg_image.size[0]
         iy = bg_image.size[1]
-        bg_image = bg_image.tostring("raw", "BGRX", 0, -1)
+        # bg_image = bg_image.tostring("raw", "BGRX", 0, -1)
+        bg_image = bg_image.tobytes("raw", "BGRX", 0, -1)
   
         # create background texture
         glBindTexture(GL_TEXTURE_2D, self.texture_background)
@@ -100,6 +103,7 @@ class OpenGLGlyphs:
         for glyph in glyphs:
              
             rvecs, tvecs, glyph_name = glyph
+            glyph_name = 'cone'
  
             # build view matrix
             rmtx = cv2.Rodrigues(rvecs)[0]
@@ -116,7 +120,7 @@ class OpenGLGlyphs:
             # load view matrix and draw shape
             glPushMatrix()
             glLoadMatrixd(view_matrix)
- 
+            glCallList(self.cone.gl_list)
             if glyph_name == SHAPE_CONE:
                 glCallList(self.cone.gl_list)
             elif glyph_name == SHAPE_SPHERE:
@@ -135,8 +139,11 @@ class OpenGLGlyphs:
  
     def main(self):
         # setup and run OpenGL
+        print("ccccccc")
         glutInit()
+        print("dddd")
         glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH)
+        print("eee")
         glutInitWindowSize(640, 480)
         glutInitWindowPosition(800, 400)
         self.window_id = glutCreateWindow("OpenGL Glyphs")

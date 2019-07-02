@@ -11,7 +11,7 @@ def MTL(filename):
         if values[0] == 'newmtl':
             mtl = contents[values[1]] = {}
         elif mtl is None:
-            raise ValueError("mtl file doesn't start with newmtl stmt")
+            raise (ValueError, "mtl file doesn't start with newmtl stmt")
         elif values[0] == 'map_Kd':
             # load the texture referred to by this declaration
             mtl[values[0]] = values[1]
@@ -27,7 +27,7 @@ def MTL(filename):
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ix, iy, 0, GL_RGBA,
                 GL_UNSIGNED_BYTE, image)
         else:
-            mtl[values[0]] = list(map(float, values[1:]))
+            mtl[values[0]] = map(float, values[1:])
     return contents
 
 class OBJ:
@@ -44,6 +44,7 @@ class OBJ:
             values = line.split()
             if not values: continue
             if values[0] == 'v':
+                # payIntList = list(map(float,payList))
                 v = list(map(float, values[1:4]))
                 if swapyz:
                     v = v[0], v[2], v[1]
@@ -87,9 +88,9 @@ class OBJ:
             if 'texture_Kd' in mtl:
                 # use diffuse texmap
                 glBindTexture(GL_TEXTURE_2D, mtl['texture_Kd'])
-            else:
+            # else:
                 # just use diffuse colour
-                glColor(*mtl['Kd'])
+                # glColor(*mtl['Kd'])
 
             glBegin(GL_POLYGON)
             for i in range(len(vertices)):

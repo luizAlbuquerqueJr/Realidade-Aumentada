@@ -1,6 +1,7 @@
 import numpy as np
 import cv2 as cv
-from obj import OBJ
+# IMPORT OBJECT LOADER
+from objloader import *
 # import matplotlib.pyplot as plt
 
 # Load previously saved data
@@ -94,7 +95,7 @@ if True == True:
     # print(len(pts3dd))
     # print(len(pts2dd))
     # print(pts3dd)
-    self.cone = OBJ('cone.obj')
+    self.cone = OBJ('cone.mlt')
     glCallList(self.cone.gl_list)
     print("limite", limite)
      
