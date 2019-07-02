@@ -1,6 +1,6 @@
 import numpy as np
 import cv2 as cv
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 # Load previously saved data
 with np.load('R1.npz') as X:
@@ -32,7 +32,7 @@ objp[:,:2] = np.mgrid[0:7,0:6].T.reshape(-1,2)
 axis = np.float32([[0,0,0], [0,3,0], [3,3,0], [3,0,0],[0,0,-3],[0,3,-3],[3,3,-3],[3,0,-3] ])
 
 
-cap = cv.VideoCapture(1)
+cap = cv.VideoCapture(2)
 img1 = cv.imread('fotos/box1.jpg',cv.IMREAD_GRAYSCALE)          # queryImage
 
 while(True):
@@ -73,11 +73,17 @@ while(True):
 
 
     
+    limite = 0
+    distanciaMaxima = 40
     a = []
     b = []
     for i in range(len(matches)):
         a.append(matches[i].trainIdx)
         b.append(matches[i].queryIdx)
+        # print(matches[i].distance)
+        if(matches[i].distance < distanciaMaxima):
+            limite = i-1
+
     # print("b:")
     # print(b)
 
@@ -90,16 +96,32 @@ while(True):
 
     # Draw first 10 matches.
     img3 = cv.drawMatches(img1,kp1,img2Gray,kp2,matches[:20],None,flags=cv.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
-    print(matches[0].distance)
-    if matches[0].distance < 25:
+    print(limite)
+    if limite > 5:
         print("RA")
-        ret,rvecs, tvecs = cv.solvePnP(pts3dd, pts2dd, mtx, dist)
+        ret,rvecs, tvecs = cv.solvePnP(pts3dd[:limite], pts2dd[:limite], mtx, dist)
+        width = img1.shape[0]
+        heigth = img1.shape[1]
+        axis1 = np.float32([[0,0,1],[0,width,1],[heigth,0,1],[heigth,width,1]])
+        # axis1 = np.float32([[0,0,1],[0,img1.width,1]])
+        imgpts, jac = cv.projectPoints(axis1, rvecs, tvecs, mtx, dist)
+        # print(imgpts[1][0][1])
+        # print(imgpts[0][0][1])
+        largura = int(imgpts[1][0][1] - imgpts[0][0][1])
+        altura = int(imgpts[3][0][1] - imgpts[2][0][1])
+        # print(largura)
+        # print(altura)
+        # cv.rectangle(img3,(imgpts[0][0][0],imgpts[0][0][1]),(imgpts[3][0][0],imgpts[3][0][1]),(0,255,0),3)
+        if(int(imgpts[0][0][1]) > -10 and int(imgpts[0][0][1]) < 1000):
+            print(int(imgpts[0][0][1]))
+            # cv.rectangle(img2,(imgpts[0][0][0],imgpts[0][0][1]),(imgpts[3][0][0],imgpts[3][0][1]),(0,255,0),3)
         # project 3D points to image plane
-        imgpts, jac = cv.projectPoints(20*axis, rvecs, tvecs, mtx, dist)       
-        img2 = draw2(img3,pts2d,imgpts)
-    cv.imwrite('frame.png',img3)
+        imgpts, jac = cv.projectPoints(10*axis, rvecs, tvecs, mtx, dist)       
+        img2 = draw2(img2,pts2d,imgpts)
+    cv.imwrite('frame.png',img2)
+    cv.imwrite('frameSaida.png',img3)
     print("frame")
-    cv.imshow('frame',img3)
+    cv.imshow('frame',img2)
 
 # When everything done, release the capture
 cap.release()
