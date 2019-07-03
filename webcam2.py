@@ -32,7 +32,7 @@ objp[:,:2] = np.mgrid[0:7,0:6].T.reshape(-1,2)
 axis = np.float32([[0,0,0], [0,3,0], [3,3,0], [3,0,0],[0,0,-3],[0,3,-3],[3,3,-3],[3,0,-3] ])
 
 
-cap = cv.VideoCapture(2)
+cap = cv.VideoCapture(1)
 img1 = cv.imread('fotos/box1.jpg',cv.IMREAD_GRAYSCALE)          # queryImage
 
 while(True):
@@ -126,6 +126,4 @@ while(True):
 # When everything done, release the capture
 cap.release()
 cv.destroyAllWindows()
-
-
 
