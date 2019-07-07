@@ -3,7 +3,7 @@ import cv2 as cv
 import matplotlib.pyplot as plt
 
 
-cap = cv.VideoCapture(1)
+cap = cv.VideoCapture(0)
 img1 = cv.imread('fotos/box1.jpg',cv.IMREAD_GRAYSCALE)          # queryImage
 
 while(True):
@@ -46,7 +46,7 @@ while(True):
     # Sort them in the order of their distance.
     matches = sorted(matches, key = lambda x:x.distance)
     # Draw first 10 matches.
-    img3 = cv.drawMatches(img1,kp1,img2,kp2,matches[:20],None,flags=cv.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
+    img3 = cv.drawMatches(img1,kp1,img2,kp2,matches[:200000],None,flags=cv.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
     # plt.imshow(img3),plt.show()
 
     cv.imshow('frame',img3)

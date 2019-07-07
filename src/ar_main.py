@@ -35,7 +35,7 @@ def main():
 
     
     # init video capture
-    cap = cv2.VideoCapture(1)
+    cap = cv2.VideoCapture(0)
     start = time.time()
 
     dst_old = np.array([[0,0],[0,0],[0,0],[0,0]])
@@ -126,7 +126,7 @@ def main():
                         pass
                 # draw first 10 matches.
                 if args.matches:
-                    frame = cv2.drawMatches(model, kp_model, frame, kp_frame, matches[:10],None,flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
+                    frame = cv2.drawMatches(model, kp_model, frame, kp_frame, matches[:2000000],None,flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
                     # img3 = cv.drawMatches(img1,kp1,img2Gray,kp2,matches[:20],None,flags=cv.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
                 # show result
                 # frame = cv2.drawMatches(model, kp_model, frame, kp_frame, matches[:10],None,flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
