@@ -147,7 +147,7 @@ def render(img, obj, projection, model ,color=False):
     """
 
     vertices = obj.vertices
-    scale_matrix = np.eye(3) *1
+    scale_matrix = np.eye(3) * 2
     h, w = model.shape
     # print(color)
     # print("qtd de faces:",len(obj.faces) )
